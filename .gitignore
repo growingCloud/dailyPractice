@@ -6,3 +6,15 @@ studyC/20211215/.vs/20211215/v16/.suo
 *.filters
 *.filters
 *.vcxproj
+*.xml
+*.prefs
+*.prefs
+studyJAVA/.metadata/.log
+studyJAVA/.metadata/.lock
+*.lock
+*.index
+studyJAVA/.metadata/.mylyn/.taskListIndex/segments_1
+*.log
+*.setup
+studyJAVA/.metadata/.plugins/org.eclipse.ui.intro/introstate
+*.ini
