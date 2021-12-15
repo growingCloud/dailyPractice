@@ -19,3 +19,13 @@ studyJAVA/.metadata/.mylyn/.taskListIndex/segments_1
 studyJAVA/.metadata/.plugins/org.eclipse.ui.intro/introstate
 *.ini
 *.zip
+studyJSP/Servers/.project
+*.policy
+*.properties
+studyJSP/test/.classpath
+studyJSP/test/.project
+studyJSP/test/.settings/.jsdtscope
+*.component
+*.container
+*.name
+*.MF
