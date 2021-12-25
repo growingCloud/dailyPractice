@@ -1,0 +1,84 @@
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection" %>
+<%@page import="java.sql.Statement" %>
+<%@page import="java.sql.ResultSet" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%!
+		Connection connection;
+		// Connection : DB와 연결성을 가지는 인터페이스
+		Statement statement;
+		// Statememt : SQL 문을 실행하는 인터페이스
+		ResultSet resultSet;
+		// ResultSet : 조회결과 데이터를 갖는 인터페이스
+		
+		String driver = "Oracle.jdbc.OracleDriver";
+		// OracleDriver : JDBC 드라이버 클래스이다.
+		// JAVA 응용 프로그램에서 데이터 베이스에 접속하려면
+		// 드라이버를 프로그램에 등록하는 코드를 제공해야 한다.
+		
+		String url = "jdbc:oracle:thin:@localhost:1521";
+		// Jdbc:oracle:thin 은 사용하는 JDBC 드라이버가 thin 타입임을 의미
+		// (thin >> 순수하게 자바클래스로 바로 DB와 연결)
+		// 1521은 오라클 listener의 포트번호이다.
+		// xe는 오라클 DB의 고유한 service name 이다.
+		
+		String uid = "C##JSPUSER1";
+		String upw = "jsp123";
+		String query = "select * from member";
+				
+	%>
+	
+	<%
+		try{
+	
+		Class.forName(driver);
+		// Oracle 드라이버 클래스를 메모리에 올린다. 
+		
+		connection = DriverManager.getConnection(url, uid, upw);
+		// Driver Manager 클래스는 JDBC 드라이버를 통해서 Connection을 만드는 역할을 한다.
+		
+		statement = connection.createStatement();
+		// SQL 문을 전송하고 처리된 결과를 다시 자바 프로그램 쪽으로 전달해주는
+		// Statement 객체를 생성하기 위해 Collection 객체의 createStatement 메소드를 사용한다
+		
+		statement.executeQuery(query); // "select * from member"
+		// Statement 객체의 excuteQuery 메소드로 SQL문을 전송한다.
+		// 반환하는 결과를 ResultSet으로 받는다.
+		
+		while(resultSet.next()){
+			// 다음 레코드(SQL 테이블 안의 데이터 행(?))가 있는지 판단하여 없으면 flase, 
+			// 있으면 true를 반환 한 다음에 커서를 다음 레코드로 이동시킨다.
+			String id = resultSet.getString("id");
+			// 컬럼의 값을 추출하는 getter 메소드를 가지고 있다.
+			// 문자열로 컬럼의 이름을 지정할 수 있다.
+			String pw = resultSet.getString("pw");
+			String nickName = resultSet.getString("nickName");
+			String email = resultSet.getString("email");
+			
+			out.print("ID : " + id + "PW : " + pw + "nickName : " + nickName + "email : " + email + "<br>");
+		}
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			// DB 관련 처리 작업이 완료 된 다음에는 사용했던 객체들을 메모리에서 해제 해 주어야 한다.
+			// 해제하는 순서는 최근 사용 했던 객체부터 거꾸로 올라가며 해제한다.
+			try{
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) connection.close();
+			}catch(Exception e2){
+			
+			}
+		}
+	%>
+</body>
+</html>
