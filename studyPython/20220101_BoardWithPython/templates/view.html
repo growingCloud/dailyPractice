@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <script>
+        function reading() {
+            $.ajax({
+                type: "GET",
+                url: "/view",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let view_posting = response['view_datas'];
+                        for (let i = 0; i < view_posting.length; i++) {
+                            let name = view_posting[i]['name'];
+                            let title = view_posting[i]['title'];
+                            let contents = view_posting[i]['contents'];
+                            let pubdate = view_posting[i]['pubdate'];
+                            let view = view_posting[i]['view'];
+
+                            let temp_html = `<tr>
+                                                <th>${title}</th>
+                                                <td>${name}</td>
+                                                <td>${pubdate}</td>
+                                                <td>${view}</td>
+                                                <td>${contents}</td>
+                                            </tr>`
+                            $('#view-box').append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
+<body>
+
+        <tbody id="view-box">
+        </tbody>
+
+</body>
+</html>
