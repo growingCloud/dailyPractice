@@ -8,6 +8,7 @@ import math
 
 app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)    # 로그인 세션 유지시간
+app.config["SECRET_KEY"] = "sparta"    # 세션을 활용하기 위한 시크릿 키 (없으면 RuntimeError: The session is unavailable because no secret key was set.)
 client = MongoClient('localhost', 27017)
 db = client.dbpractice
 
@@ -15,7 +16,7 @@ db = client.dbpractice
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return redirect(url_for('member_login'))
 
 
 # current_time(datetime)을 우리가 보는 시간으로 바꿔주는 함수
@@ -34,6 +35,10 @@ def format_datetime(value):
 # 게시글 작성 (Create)
 @app.route('/write', methods=['GET', 'POST'])
 def board_write():
+    # 회원에게만 글 작성 권한 부여
+    if session.get('id') is None :
+        return render_template('login.html')
+
     if request.method == "POST":
         # 내용이 입력되어 있는 상태에서는 POST로 받음
         name_receive = request.form['name_give']
@@ -191,14 +196,14 @@ def member_login():
         if id_info is None:
             return render_template('login.html')
         else:
-            if id_info.get('pw') != pw_receive :
+            if id_info.get('pw') == pw_receive :
                 session["id"] = email_receive
                 session["name"] = id_info.get('name')
                 session["idx"] = str(id_info.get('_id'))
                 session.permanent = True
-                return redirect(url_for(""))
+                return redirect(url_for('board_lists'))
             else:
-                return render_template('list.html')
+                return render_template('login.html')
 
         return ""
 
