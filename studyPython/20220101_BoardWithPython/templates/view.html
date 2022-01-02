@@ -25,11 +25,11 @@
                             let view = view_posting[i]['view'];
 
                             let temp_html = `<tr>
-                                                <th>${title}</th>
-                                                <td>${name}</td>
-                                                <td>${pubdate}</td>
-                                                <td>${view}</td>
-                                                <td>${contents}</td>
+                                                <th>제목 : ${title}</th>
+                                                <td>작성자 : ${name}</td>
+                                                <td>게시일 : ${pubdate}</td>
+                                                <td>조회수 : ${view}</td>
+                                                <td>내용 : ${contents}</td>
                                             </tr>`
                             $('#view-box').append(temp_html)
                     }
@@ -40,7 +40,14 @@
 <body>
 
         <tbody id="view-box">
+            <tr>
+                <th>제목 : 없음</th>
+                <td>작성자 : -</td>
+                <td>게시일 : 2021.12.31</td>
+                <td>조회수 : 0</td>
+                <td>내용 : 없음</td>
+            </tr>
         </tbody>
-
+        <a href="list.html">목차</a>
 </body>
 </html>

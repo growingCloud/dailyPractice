@@ -1,13 +1,13 @@
 from pymongo import MongoClient
-from flask import Flask, render_template, jsonify, request, abort, redirect, url_for
+from flask import Flask, render_template, jsonify, request, abort, redirect, url_for, session
 # abort : 입력이 잘못 되었을때 오류 페이지를 내보내기 위한 모듈
-from datetime import datetime
+from datetime import datetime, timedelta
 from bson.objectid import ObjectId  # {'_id': ObjectId(idx)}에서 idx를 ObjectId의 형태로 받기 위한 모듈
 import time
 import math
 
 app = Flask(__name__)
-
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)    # 로그인 세션 유지시간
 client = MongoClient('localhost', 27017)
 db = client.dbpractice
 
@@ -15,7 +15,7 @@ db = client.dbpractice
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('write.html')
+    return render_template('join.html')
 
 
 # current_time(datetime)을 우리가 보는 시간으로 바꿔주는 함수
@@ -82,7 +82,7 @@ def board_view():
                 'view': data.get('view')
             }
 
-            return jsonify({'result': 'success', 'view_datas': view_data})
+            return jsonify({'result': 'success', 'msg': '게시글이 작성되었습니다.'})
     return abort(404)  # 맞는 페이지가 없을때 404 페이지 내보내기
 
 
@@ -113,27 +113,97 @@ def board_lists():
     elif search == 3:
         search_list.append({"name": {"$regex": keyword}})
 
-    # 검색 대상이 하나라도 존재 할 경우, query 변수에 $or 리스트를 쿼리한다
+    # 검색 대상이 하나라도 존재 할 경우, query 변수에 $or 리스트를 쿼리한다 (다중검색을 위한 기능)
     if len(search_list) > 0 :
         query = {"$or" : search_list}
     print(query)
 
 # 페이지 기능 구현 (2)
-    lists = list(db.board.find({}, {'_id': False})
+    lists = list(db.board.find({query}, {'_id': False})
                  .skip((page - 1) * limit).limit(limit))
 
     # 페이지네이션 구현 (라이브러리 사용X)
-    # total_count = db.board.find({}).count()                 # 게시물의 총 갯수
+    # total_count = db.board.find({query}).count()                 # 게시물의 총 갯수
     # last_page_num = math.ceil(total_count / limit)          # 마지막 페이지의 수, 게시물이 하나라도 있으면 페이지가 존재해야 하므로 소수점이 생기면 무조건 올림!
     # block_size = 5                                          # 페이지 블럭을 5개씩 지정
     # block_num = int((page - 1) / block_size)                # 현재 게시글 블럭의 위치
     # block_start = int((block_size * block_num) + 1)         # 블럭의 시작 위치
     # block_end = math.ceil((block_start + block_size - 1))   # 블럭의 끝 위치
+    # search = search
+    # keyword = keyword
 
-    # page_nation = (page, limit, total_count, last_page_num, block_size, block_num, block_start, block_end)
+    # page_nation = (page, limit, total_count, last_page_num, block_size,
+    #                block_num, block_start, block_end, search, keyword)
 
     # return jsonify({'postings': lists, 'making-pages': page_nation})
     return jsonify({'postings': lists})
+
+
+# 회원가입 페이지 (Join)
+@app.route('/join', methods=['GET', 'POST'])
+def member_join():
+    if request.method == "POST" :
+        name_receive = request.form['name_give']
+        email_receive = request.form['email_give']
+        pw_receive = request.form['pw_give']
+        pw_check_receive = request.form['pw_check_give']
+
+        # 가입 시 빈칸이 있을 경우
+        # if name_receive is None or email_receive is None or pw_receive is None or pw_check_receive :
+        #    return render_template('join.html')
+
+        # 비밀번호 확인과 일치하지 않을 경우
+        # if pw_receive != pw_check_receive:
+        #    return render_template('join.html')
+
+        # 이메일(아이디) 중복 검사사
+        # count = db.members.find({"email" : email_receive}).count()
+        # if count > 0:
+        #    return render_template('join.html')
+
+        current_time = round(datetime.utcnow().timestamp() * 1000)
+
+        member_join = {
+            'name': name_receive,
+            'email': email_receive,
+            'pw': pw_receive,
+            'joindate': current_time,
+            'logintime': "",
+            'logincount': 0
+        }
+        db.members.insert_one(member_join)
+        return ""
+
+    else:
+        return render_template('join.html')
+
+
+# 로그인 페이지 (Login)
+@app.route('/login', methods=['GET', 'POST'])
+def member_login():
+    if request.method == "POST" :
+        email_receive = request.form['email_give']
+        pw_receive = request.form['pw_give']
+        current_time = round(datetime.utcnow().timestamp() * 1000)
+
+        id_info = db.members.find_one({"email": email_receive})
+
+        if id_info is None:
+            return render_template('login.html')
+        else:
+            if id_info.get('pw') != pw_receive :
+                session["id"] = email_receive
+                session["name"] = id_info.get('name')
+                session["idx"] = str(id_info.get('_id'))
+                session.permanent = True
+                return redirect(url_for(""))
+            else:
+                return render_template('list.html')
+
+        return ""
+
+    else:
+        return render_template('login.html')
 
 
 if __name__ == '__main__':

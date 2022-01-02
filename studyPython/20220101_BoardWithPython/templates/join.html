@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- flash를 임포트하여 쓴 경고문 메세지, 얼럿으로 할 수 있는지 다시 검토! -->
+    {% with message = get_flashed_messages()%}
+    {% endwith %}
+    <table>
+        <form name="form" action="/join" method="POST">
+            <thead>
+                <caption>회원 가입</caption>
+            </thead>
+
+            <tr>
+                <td>이름</td>
+                <td><input type="text" name="name_give"></td>
+            </tr>
+            <tr>
+                <td>이메일 (아이디)</td>
+                <td><input type="email" name="email_give"></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="pw_give"></td>
+            </tr>
+            <tr>
+                <td>비밀번호 확인</td>
+                <td><input type="password" name="pw_check_give"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="가입하기"></td>
+            </tr>
+        </form>
+    </table>
+</body>
+</html>
