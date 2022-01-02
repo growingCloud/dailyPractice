@@ -15,7 +15,7 @@ db = client.dbpractice
 # HTML 화면 보여주기
 @app.route('/')
 def home():
-    return render_template('join.html')
+    return render_template('login.html')
 
 
 # current_time(datetime)을 우리가 보는 시간으로 바꿔주는 함수
@@ -57,14 +57,15 @@ def board_write():
         # SQL의 primary key와 같은 고유 번호(_id) 출력
         idx = db.board.insert_one(posting)
         # print(idx.inserted_id)
-        return redirect(url_for("board_view", idx=idx.inserted_id))
+        # return redirect(url_for("board_view", idx=idx.inserted_id))
+        return redirect(url_for('board_view', idx=idx.inserted_id))
 
     else:
         # /write 경로로 들어오면 GET으로 받아 입력창 보여줌
         return render_template('write.html')
 
 
-# 게시글 상세 페이지 (Read)
+# 게시글 상세 페이지 (Read) ★★★★★★★★★★★★★★★★
 @app.route('/view', methods=['GET'])
 def board_view():
     idx = request.args.get("idx")
@@ -81,12 +82,11 @@ def board_view():
                 'pubdate': data.get('pubdate'),
                 'view': data.get('view')
             }
-
-            return jsonify({'result': 'success', 'msg': '게시글이 작성되었습니다.'})
+            return render_template('view.html', result = view_data)
     return abort(404)  # 맞는 페이지가 없을때 404 페이지 내보내기
 
 
-# 게시글 리스트 페이지 (Read_List)
+# 게시글 리스트 페이지 (Read_List) ★★★★★★★★★★★★★★★★
 @app.route('/list', methods=['GET'])
 def board_lists():
 # 페이지 기능 구현 (1)
@@ -119,7 +119,7 @@ def board_lists():
     print(query)
 
 # 페이지 기능 구현 (2)
-    lists = list(db.board.find({query}, {'_id': False})
+    lists = list(db.board.find({}, {'_id': False})
                  .skip((page - 1) * limit).limit(limit))
 
     # 페이지네이션 구현 (라이브러리 사용X)
@@ -136,7 +136,7 @@ def board_lists():
     #                block_num, block_start, block_end, search, keyword)
 
     # return jsonify({'postings': lists, 'making-pages': page_nation})
-    return jsonify({'postings': lists})
+    return render_template('list.html', result = lists)
 
 
 # 회원가입 페이지 (Join)

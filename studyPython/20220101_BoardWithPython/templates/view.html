@@ -11,43 +11,43 @@
 
         function reading() {
             $.ajax({
-                type: "GET",
-                url: "/view",
+                type: 'GET',
+                url: 'url_for('board_view', idx=idx.inserted_id)',
+                /* ★★★★★id 값을 가져와서 동적 url을 할당하고 싶은데 방법을 모르겠네요 ..★★★★★*/
                 data: {},
                 success: function (response) {
-                    if (response["result"] == "success") {
-                        let view_posting = response['view_datas'];
-                        for (let i = 0; i < view_posting.length; i++) {
-                            let name = view_posting[i]['name'];
-                            let title = view_posting[i]['title'];
-                            let contents = view_posting[i]['contents'];
-                            let pubdate = view_posting[i]['pubdate'];
-                            let view = view_posting[i]['view'];
+                    let view_posting = response['view_datas'];
+                    for (let i = 0; i < view_posting.length; i++) {
+                        let name = view_posting[i]['name'];
+                        let title = view_posting[i]['title'];
+                        let contents = view_posting[i]['contents'];
+                        let pubdate = view_posting[i]['pubdate'];
+                        let view = view_posting[i]['view'];
 
-                            let temp_html = `<tr>
+                        let temp_html = `<tr>
                                                 <th>제목 : ${title}</th>
                                                 <td>작성자 : ${name}</td>
                                                 <td>게시일 : ${pubdate}</td>
                                                 <td>조회수 : ${view}</td>
                                                 <td>내용 : ${contents}</td>
                                             </tr>`
-                            $('#view-box').append(temp_html)
+                        $('#view-box').append(temp_html)
                     }
                 }
-            })
+            });
         }
     </script>
 <body>
 
         <tbody id="view-box">
             <tr>
-                <th>제목 : 없음</th>
-                <td>작성자 : -</td>
-                <td>게시일 : 2021.12.31</td>
-                <td>조회수 : 0</td>
-                <td>내용 : 없음</td>
+                <th>제목 : 없음</th><br><br>
+                <td>작성자 : -</td><br>
+                <td>게시일 : 2021.12.31</td><br>
+                <td>조회수 : 0</td><br>
+                <td>내용 : 없음</td><br>
             </tr>
         </tbody>
-        <a href="list.html">목차</a>
+        <a href="/list">목차</a>
 </body>
 </html>

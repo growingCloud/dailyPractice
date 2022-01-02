@@ -55,7 +55,7 @@
                 window.location.reload()
             } else {
                 self.location.href = "/list?search=" + v_search + "&keyword=" + v_keyword ;
-                /* 바로 윗줄, jinja 안쓰고 구현한게 맞는지 확인해야 함 ... */
+                /* ★★★★★바로 윗줄, jinja 안쓰고 구현한게 맞는지 확인해야 함 ... ★★★★★*/
             }
         }
     </script>
@@ -66,17 +66,60 @@
                 <thead>
                 <tr>
                     <td>번호 : 1</td>
-                    <td><a href="/view">제목 : 제목</a></td>
-                    <td>이름 : 테스터</td>
+                    <td><a href="/view">제목 : 첫번째 테스트 게시글</a></td>
+                    <td>이름 : 홍길동</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 2</td>
+                    <td><a href="/view">제목 : 두번째 테스트 게시글</a></td>
+                    <td>이름 : 성춘향</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 3</td>
+                    <td><a href="/view">제목 : 세번째 테스트 게시글</a></td>
+                    <td>이름 : 이몽룡</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 4</td>
+                    <td><a href="/view">제목 : 네번째 테스트 게시글</a></td>
+                    <td>이름 : 장보고</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 5</td>
+                    <td><a href="/view">제목 : 다섯번째 테스트 게시글</a></td>
+                    <td>이름 : 이순신</td>
                     <td>날짜 : 2021-12-31</td>
                     <td>조회수 : 100</td>
                 </tr>
                 </thead>
             </table>
 
-            <!-- jinja -->
-
-            <!-- 게시글 검색 기능 -->
+            <!--★★★★★ jinja ★★★★★-->
+            <!-- 게시글 검색 기능 (현재 안됨)-->
             <select name = "search" id = "search">
                 <option value="" {% if search == '' or search == -1 %} selected {% endif %}>검색</option>
                 <option value=0 {% if search == 0 %} selected {% endif %}>제목</option>
@@ -88,6 +131,6 @@
             <input type="button" value="검색" onclick="search()">
         </div>
 
-        <a href="write.html">글쓰기</a>
+        <a href="write">글쓰기</a>
 </body>
 </html>
