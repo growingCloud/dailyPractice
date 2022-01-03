@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from bson.objectid import ObjectId  # {'_id': ObjectId(idx)}에서 idx를 ObjectId의 형태로 받기 위한 모듈
 import time
 import math
+from functools import wraps
 
 app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)    # 로그인 세션 유지시간
@@ -32,13 +33,21 @@ def format_datetime(value):
     return value.strftime('%Y-%m-%d %H:%M:%S')
 
 
+# 로그인 후 권한 부여 (Authority) 함수
+def login_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if session.get("id") is None or session.get("id") == "" :
+            return redirect(url_for("member_login", next_url=request.url))
+        return func(*args, **kwargs)
+    return decorated_function
+
+
 # 게시글 작성 (Create)
 @app.route('/write', methods=['GET', 'POST'])
+# 회원에게만 글 작성 권한 부여
+@login_required
 def board_write():
-    # 회원에게만 글 작성 권한 부여
-    if session.get('id') is None :
-        return render_template('login.html')
-
     if request.method == "POST":
         # 내용이 입력되어 있는 상태에서는 POST로 받음
         name_receive = request.form['name_give']
@@ -55,6 +64,7 @@ def board_write():
             'title': title_receive,
             'contents': contents_receive,
             'pubdate': format_datetime(current_time),
+            'writer_id':session.get("id"),
             'view': 0
         }
         # db.board.insert_one(posting)
@@ -71,7 +81,8 @@ def board_write():
 
 
 # 게시글 상세 페이지 (Read) ★★★★★★★★★★★★★★★★
-@app.route('/view', methods=['GET'])
+@app.route('/view/<idx>', methods=['GET'])
+@login_required
 def board_view():
     idx = request.args.get("idx")
     if idx is not None:
@@ -85,7 +96,8 @@ def board_view():
                 'title': data.get('title'),
                 'contents': data.get('contents'),
                 'pubdate': data.get('pubdate'),
-                'view': data.get('view')
+                'view': data.get('view'),
+                'writer_id': data.get("writer_id", ""),
             }
             return render_template('view.html', result = view_data)
     return abort(404)  # 맞는 페이지가 없을때 404 페이지 내보내기
@@ -154,17 +166,17 @@ def member_join():
         pw_check_receive = request.form['pw_check_give']
 
         # 가입 시 빈칸이 있을 경우
-        # if name_receive is None or email_receive is None or pw_receive is None or pw_check_receive :
-        #    return render_template('join.html')
+        if name_receive is None or email_receive is None or pw_receive is None or pw_check_receive :
+           return render_template('join.html')
 
         # 비밀번호 확인과 일치하지 않을 경우
-        # if pw_receive != pw_check_receive:
-        #    return render_template('join.html')
+        if pw_receive != pw_check_receive:
+           return render_template('join.html')
 
-        # 이메일(아이디) 중복 검사사
-        # count = db.members.find({"email" : email_receive}).count()
-        # if count > 0:
-        #    return render_template('join.html')
+        # 이메일(아이디) 중복 검사
+        count = db.members.find({"email" : email_receive}).count()
+        if count > 0:
+           return render_template('join.html')
 
         current_time = round(datetime.utcnow().timestamp() * 1000)
 
@@ -177,7 +189,7 @@ def member_join():
             'logincount': 0
         }
         db.members.insert_one(member_join)
-        return ""
+        return render_template('login.html')
 
     else:
         return render_template('join.html')
@@ -209,6 +221,18 @@ def member_login():
 
     else:
         return render_template('login.html')
+
+
+# 작성한 글 수정 (Update)
+@app.route('/edit/<idx>', methods=['GET', 'POST'])
+def board_edit(idx):
+    return ""
+
+
+# 작성한 글 삭제 (Delete)
+@app.route('/delete/<idx>', methods=['GET', 'POST'])
+def board_delete(idx):
+    return ""
 
 
 if __name__ == '__main__':

@@ -49,5 +49,10 @@
             </tr>
         </tbody>
         <a href="/list">목차</a>
-</body>
+
+        <!-- 진자 문법 수정하기 -->
+        {% if session["id"] == result.writer_id %}
+        <a href="{{url_for('board_delete', idx=result.id)}}">글 삭제</a>
+        <a href="{{url_for('board_edit', idx=result.id)}}">글 수정</a>
+</정ody>
 </html>
