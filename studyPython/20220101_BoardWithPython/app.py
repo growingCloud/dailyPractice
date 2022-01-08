@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)    # 로그인 세션 유지시간
 app.config["SECRET_KEY"] = "sparta"    # 세션을 활용하기 위한 시크릿 키 (없으면 RuntimeError: The session is unavailable because no secret key was set.)
 client = MongoClient('localhost', 27017)
-db = client.dbpractice
+db = client.toy_practice
 
 
 # HTML 화면 보여주기
@@ -81,13 +81,16 @@ def board_write():
 
 
 # 게시글 상세 페이지 (Read) ★★★★★★★★★★★★★★★★
-@app.route('/view/<idx>', methods=['GET'])
+@app.route('/view', methods=['GET'])
 @login_required
 def board_view():
     idx = request.args.get("idx")
-    if idx is not None:
-        data = db.board.find_one({'_id': ObjectId(idx)})
+    page = request.args.get("page", 1, type=int)
+    search = request.args.get("search", -1, type=int)
+    keyword = request.args.get("keyword", "", type=str)
 
+    if idx is not None:
+        data = db.board.find_one_and_update({"_id": ObjectId(idx)}, {"$inc": {"view": 1}}, return_document=True)
         if data is not None:
             view_data = {
                 # 'id': data.get('_id'), >> bson 타입이라 제외함 (objectid is not json serializable)
@@ -99,8 +102,8 @@ def board_view():
                 'view': data.get('view'),
                 'writer_id': data.get("writer_id", ""),
             }
-            return render_template('view.html', result = view_data)
-    return abort(404)  # 맞는 페이지가 없을때 404 페이지 내보내기
+            return render_template("view.html", result=view_data, page=page, search=search, keyword=keyword)
+    return abort(404)  # 맞는 페이지가 없을때 404나 400 페이지 내보내기
 
 
 # 게시글 리스트 페이지 (Read_List) ★★★★★★★★★★★★★★★★
@@ -236,4 +239,4 @@ def board_delete(idx):
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5005, debug=True)
+    app.run('0.0.0.0', port=5009, debug=True)

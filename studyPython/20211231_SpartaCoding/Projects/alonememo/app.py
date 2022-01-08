@@ -43,8 +43,18 @@ def saving():
     }
 
     db.articles.insert_one(doc)
+    print(title)
 
     return jsonify({'msg':'저장이 완료 되었습니다.'})
 
+
+@app.route('/delete', methods=['POST'])
+def delete_article():
+    title = request.form['title']
+    print(title)
+    db.articles.delete_one({'title': title})
+    return jsonify({'msg': '삭제 완료 되었습니다!'})
+
+
 if __name__ == '__main__':
-   app.run('0.0.0.0',port=5003,debug=True)
+   app.run('0.0.0.0',port=5004,debug=True)
