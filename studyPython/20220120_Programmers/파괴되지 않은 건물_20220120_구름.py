@@ -1,3 +1,5 @@
+# ************(답은 나왔지만 시간초과임...)**********************
+
 # [본 문제는 정확성과 효율성 테스트 각각 점수가 있는 문제입니다.]
 #
 # N x M 크기의 행렬 모양의 게임 맵이 있습니다. 이 맵에는 내구도를 가진 건물이 각 칸마다 하나씩 있습니다.
@@ -89,3 +91,20 @@ def solution(board, skill):
 print(solution(board1, skill1))
 print(solution(board2, skill2))
 
+
+# ---------------------------------------------[이선생님 풀이]
+def solution_lee(board, skill):
+    while skill:
+        t, s_i, s_j, e_i, e_j, d = skill.pop()
+        for i in range(s_i, e_i+1):
+            for j in range(s_j, e_j+1):
+                if t == 1 :
+                    board[i][j] -= d
+                else :
+                    board[i][j] += d
+    count = 0
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] > 0:
+                count += 1
+    return count
