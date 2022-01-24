@@ -11,22 +11,56 @@
 s1 = "AB"       # result = 	"BC"
 s2 = "z"        # result = 	"a"
 s3 = "a B z"    # result = 	"e F d"
-n1, n2, n3 = 1, 1, 4
+s4 = "kl"
+s5 = "Z"
+n1, n2, n3, n4 = 1, 1, 4, 15
 
-# ord(문자), cha(숫자) : 아스키 코드 활용
+# ord(문자), chr(숫자) : 아스키 코드 활용
 
 # 문자열을 리스트로 받으면서 아스키코드 숫자로 바꿔서 리스트에 집어넣어줌
 # 구한 아스키 코드 숫자값에 n 값을 더해서 새 리스트에 넣어주기
 # 새 리스트의 숫자들을 다시 문자로 바꿔서 넣어줘야 함
 # 공백은 어떻게 처리 할 것인가? (공백은 32)
 
-list(s3)
-li = []
-ascii = []
-
-for i in s3: li.append(i)
-for i in li: ascii.append(ord(i))
+def solution(s, n):
+    li = []
+    ascii1 = []
+    ascii2 = []
 
 
-print(li)
-print(ascii)
+    for i in s: li.append(i)
+    for i in li: ascii1.append(ord(i))
+
+    for j in ascii1:
+        if j != 32:
+            if ord("A") <= j <= ord("Z"):
+                j = j + n
+                if ord("Z") < j:
+                    print("0-1 :", j)
+                    j = j - 26
+                    print("0-2 :", j)
+                j = chr(j)
+                print("1 :", j)
+                ascii2.append(j)
+
+            elif ord("a") <= j <= ord("z"):
+                j = j + n
+                if ord("z") < j:
+                    j = j - 26
+                j = chr(j)
+                print("2 :", j)
+                ascii2.append(j)
+
+        else:
+            j = chr(j)
+            ascii2.append(j)
+
+    answer = "".join(ascii2)
+    return answer
+
+#print(solution(s1, n1))
+#print(solution(s2, n2))
+#print(solution(s3, n3))     # s3 = "a B z",   n = 4
+#print(solution(s4, n4))
+print(solution(s5, n4))
+
