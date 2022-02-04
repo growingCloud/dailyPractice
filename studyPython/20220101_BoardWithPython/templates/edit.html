@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 게시글을 작성하는 form 태그(내부는 table 태그) 작성 -->
+    <table>
+        <form name="form" method="POST" action="/edit/{{data._id}}">
+            <tr>
+                <td>작성자</td>
+                <td><input type="text" name="name_give" value="{{session['name']}}" readonly></td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="title_give" value="{{data.title}}"></td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td><textarea name="contents_give">{{data.contents}}</textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit"></td>
+            </tr>
+        </form>
+    </table>
+</body>
+</html>

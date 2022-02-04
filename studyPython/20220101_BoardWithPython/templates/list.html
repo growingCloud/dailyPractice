@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        $(document).ready(function () {
+            showList();
+        });
+
+        function showList() {
+            $.ajax({
+                type: 'GET',
+                url: '/list',
+                data: {},
+                success: function (response) {
+                    let lists = response['postings']
+                    if (lists == 0) {
+                        alert('게시글이 없습니다.');
+                        window.location.reload()
+                    }
+                    for (let i = 0; i < lists.length; i++) {
+                        let primary = lists[i]['primary']
+                        let name = lists[i]['name']
+                        let title = lists[i]['title']
+                        let pubdate = lists[i]['pubdate']
+                        let view = lists[i]['view']
+
+                        let temp_html = `<div>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <td>번호 : ${i}</td>
+                                                            <td><a href="/view?idx=${primary}">제목 : ${title}</a></td>
+                                                            <td>이름 : ${name}</td>
+                                                            <td>날짜 : ${pubdate}</td>
+                                                            <td>조회수 : ${view}</td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>`
+                        $('#list-box').append(temp_html)
+                    }
+                }
+            });
+        }
+
+        /* 게시글 검색기능 search() 함수 구현 */
+        function search() {
+            let v_search = document.getElementById("search").val;
+            let v_keyword = document.getElementById("keyword").val;
+
+            if (v_search == "" || v_keyword == "") {
+                alert('검색어를 입력하세요.');
+                window.location.reload()
+            } else {
+                self.location.href = "/list?search=" + v_search + "&keyword=" + v_keyword ;
+                /* ★★★★★바로 윗줄, jinja 안쓰고 구현한게 맞는지 확인해야 함 ... ★★★★★*/
+            }
+        }
+    </script>
+</head>
+<body>
+        <!-- 로그인 여부를 확인하는 jinja -->
+        {{session["name"]}}<p>님 로그인을 환영합니다!</p><br><br>
+
+        <div id="list-box">
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 1</td>
+                    <td><a href="/view">제목 : 첫번째 테스트 게시글</a></td>
+                    <td>이름 : 홍길동</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 2</td>
+                    <td><a href="/view">제목 : 두번째 테스트 게시글</a></td>
+                    <td>이름 : 성춘향</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 3</td>
+                    <td><a href="/view">제목 : 세번째 테스트 게시글</a></td>
+                    <td>이름 : 이몽룡</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 4</td>
+                    <td><a href="/view">제목 : 네번째 테스트 게시글</a></td>
+                    <td>이름 : 장보고</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <td>번호 : 5</td>
+                    <td><a href="/view">제목 : 다섯번째 테스트 게시글</a></td>
+                    <td>이름 : 이순신</td>
+                    <td>날짜 : 2021-12-31</td>
+                    <td>조회수 : 100</td>
+                </tr>
+                </thead>
+            </table>
+
+            <!--★★★★★ jinja ★★★★★-->
+            <!-- 게시글 검색 기능 (현재 안됨)-->
+            <select name = "search" id = "search">
+                <option value="" {% if search == '' or search == -1 %} selected {% endif %}>검색</option>
+                <option value=0 {% if search == 0 %} selected {% endif %}>제목</option>
+                <option value=1 {% if search == 1 %} selected {% endif %}>내용</option>
+                <option value=2 {% if search == 2 %} selected {% endif %}>제목+내용</option>
+                <option value=3 {% if search == 3 %} selected {% endif %}>작성자</option>
+            </select>
+            <input type="text" name="keyword" id="keyword" {% if keyword != "" %} value={{keyword}} {% endif %}>
+            <input type="button" value="검색" onclick="search()">
+        </div>
+
+        <a href="write">글쓰기</a>
+</body>
+</html>
