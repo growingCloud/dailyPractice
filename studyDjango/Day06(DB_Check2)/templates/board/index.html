@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table border = "1">
+        <tr>
+            <th>No.</th>
+            <th>Subject</th>
+            <th>Content</th>
+            <th>Like</th>
+        </tr>
+
+        {% if bset %}
+            {% for i in bset %}
+                <tr {% if i.hot %} style="background-color: aquamarine" {% endif %}>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href = "{% url 'board:detail' i.id %}">{{ i.subject }}</a></td>
+                    <td>{{ i.summary }}</td>
+                    <td>{{ i.likey }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <th clospan = "4">No DATA</th>
+        </tr>
+        {% endif %}
+    </table>
+</body>
+</html>

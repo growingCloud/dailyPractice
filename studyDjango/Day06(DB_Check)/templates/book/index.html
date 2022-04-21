@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h1>BOOKMARKS</h1>
+
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>Site Name</th>
+            <th>Button</th>
+        </tr>
+        {% if bset %}
+            {% for i in bset %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.site_name }}</td>
+                    <td><a href = "{{ i.site_url}}"><button>MOVE</button></a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <th colspan = "3">No data</th>
+            </tr>
+        {% endif %}
+    </table>
+</body>
+</html>

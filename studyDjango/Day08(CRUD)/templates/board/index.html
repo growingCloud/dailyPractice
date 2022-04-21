@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h1>Main Page</h1>
+
+  <a href="{% url 'create' %}"><button>CREATE</button></a>
+
+    <table>
+        <tr>
+            <th>No</th>
+            <th>SUBJECT</th>
+            <th>WRITER</th>
+            <th>CONTENT</th>
+        </tr>
+
+        {% for i in bset %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href = "{% url 'detail' i.id%}">{{ i.subject }}</a>></td>
+                <td>{{ i.writer }}</td>
+                <td>{{ i.content }}</td>
+            </tr>
+        {% endfor%}
+    </table>
+</body>
+</html>

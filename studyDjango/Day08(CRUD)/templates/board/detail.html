@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{ b.subject }}</h1>
+
+    <input type="text" value="{{ b.writer }}" disabled><br><br>
+    <textarea cols = "70" rows = "10" disabled>{{ b.content }}</textarea><br><br><br>
+
+    <a href = "{% url 'index' %}"><button>HOME</button></a>
+    <a href = "{% url 'update' b.id %}"><button>MOD</button></a>
+    <a href = "{% url 'delete' b.id %}"><button>DELETE</button></a>
+
+    <hr>
+
+    <form method="POST" action="{% url 'creply' b.id %}">
+        {% csrf_token %}
+        <input type="text" name="rep">
+        <input type="text" size="50" name="com">
+        <button>Comment</button> <br><br>
+    </form>
+
+    {% if rset %}
+        {% for i in rset %}
+        <b>{{ i.replyer }}</b> {{ i.comment }}
+        <a href="{% url 'dreply' b.id i.id %}"><button>X</button></a> <br>
+        {% endfor %}
+    {% else %}
+        <h6> no comments </h6>
+    {% endif %}
+</body>
+</html>

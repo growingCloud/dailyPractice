@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML 연</title>
+</head>
+<body>
+  <h1>Hello</h1>
+</body>
+</html>
+
+head section : HTML 문서에 대한 정보를 기입하는 곳 <br>
+body section : HTML 본문에 대한 내용을 기입하는 곳 <br>
+
+<!-- 여기는 주석처리 해주세요 -->
+
+태그는 두 종류가 있어요
+
+<!--    1. BLCOK 태그 : 한줄 전체 공간 차지
+        2. INLINE 태그 : 딱 그 내용만큼 공간차지   -->
+
+        <hr>H tag<hr>
+        <h1>안녕</h1>
+        <h2>안녕</h2>
+        <h3>안녕</h3>
+        <h4>안녕</h4>
+        <h5>안녕</h5>
+        <h6>안녕</h6>
+
+        <hr>💥div tag💥<hr>
+        <div>엄청많이 써요! 레이아웃(틀) 잡을때!!!</div>
+        <div class="red">여기는 빨간색으로 칠해주세요</div>
+        <div class="blue">여기는 파란색으로 칠해주세요</div>
+
+
+        <hr>list tag(ordered list)<hr>
+        li 태그라는 하위태그를 가져요!!
+        <br>먹고싶은음식 TOP3
+        <ol>
+            <li>김치찌개</li>
+            <li>돼지고기 김치찌개</li>
+            <li>김치전</li>
+        </ol>
+
+        <hr>list tag(unordered list)<hr>
+        프로그래밍 언어의 종류
+        <ul>
+            <li>C</li>
+            <li>Python</li>
+            <li>Java</li>
+            <li>GO</li>
+        </ul>
+
+        <hr>p tag<hr>
+        <p>문단을 나타냅니다!</p>
+        p 태그는 하위태그로 p 태그 아니면 인라인태그만 올 수 있다.
+
+        <hr>✨table tag✨<hr>
+        Table 태그의 하위태그 : tr (줄) <br>
+        tr 의 하위태그 : th, td
+
+        <table border="1">
+            <tr>
+                <th colspan="6">한달시간표</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>mon</th>
+                <th>tue</th>
+                <th>wed</th>
+                <th>thu</th>
+                <th>fri</th>
+            </tr>
+            <tr>
+                <td id="j">1교시</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td rowspan="2">python</td>
+            </tr>
+            <tr>
+                <td>2교시</td>
+                <td></td>
+                <td rowspan="3">django</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3교시</td>
+                <td></td>
+                <td rowspan="2">network</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4교시</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+        </table>
+
+        <hr>
+        <h1>Iiline Tags</h1>
+
+        <hr>✨img tag✨<hr>
+        src 라는 속성을 가집니다!!!
+        - 외부 URL
+        - 내부 사진파일
+        width > 가로
+        height > 높이
+        <div>
+            <div>
+                <img width="200px" src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODAzMjdfMyAg%2FMDAxNTIyMTE5MjcyMDc0.SiKLhdkzkRToCluVmmKIPPh8CfmcG7ESQXH2HxJPOKsg.IjkN9kTbVWjxTtCi0ql8xoIYoBvdxT86rNrdS-NJyGUg.JPEG.j3y_n%2F1.jpg&type=ofullfill340_600">
+            </div>
+            <div>
+                케넨사진이다!!
+            </div>
+        </div>
+        <img width="10%" src="kennen.jpeg">
+
+        <hr>✨a tag✨<hr>
+        링크태그<br>
+        필수속성 href : 경로
+        target : _self (현재창), _blank (새창)
+        <a href="https://www.naver.com" target="_self">NAVER로가기</a>
+        <a href="https://www.naver.com" target="_blank">NAVER로가기</a>
+
+        <ul>
+            <li><a href="https://www.naver.com">네이버</a></li>
+            <li><a href="https://www.daum.net" target="_blank">다음</a></li>
+            <li><a href="https://www.google.com" target="_blank">구글</a></li>
+        </ul>
+
+        <a href="test2.html">들어가기</a>
+
+
+        <hr>✨button tag✨<hr>
+        🎁<a href="test2.html"><button>클릭</button></a>
+        <button onclick="hello()">CLICK</button>
+
+        <script>
+            function hello(){
+                alert(1);
+            }
+        </script>
+
+        <hr>textarea tag<hr>
+        긴 글 입력 받을 때 사용!!
+        placeholder : 입력전 안내 텍스트 띄우기!!
+        rows(세로), cols(가로)
+        disabled
+        <textarea placeholder="글을 입력해주세요" disabled>안녕하세요</textarea>
+
+        <hr>select tag<hr>
+        사용자한테 항목을 선택!! option 이라는 필수 하위태그를 가짐!!
+        <select>
+            <option>제목</option>
+            <option>글쓴이</option>
+            <option>내용</option>
+        </select>
+
+        <hr>span tag<hr>
+        영역을 표시, 레이아웃 지정!
+        <span class="red">여기는 빨간색으로 칠할거에요</span>
+        <span class="blue">여기는 파란색으로 칠할거에요</span>
+
+        <hr>video tag<hr>
+        <video controls width="200px" src="https://naver-cjenm-h.smartmediarep.com/smc/naver/multi/eng/C01_D793872/2f636a656e6d2f434c49502f434f434f532f423132303231313934342f313032383639352f423132303231313934345f313032383639355f7433342e6d7034/0-0-0/content.mp4?solexpire=1641559647&solpathlen=165&soltoken=e3bf4adb064d3bc55dbb4656f3c5dfbe&soltokenrule=c29sZXhwaXJlfHNvbHBhdGhsZW58c29sdXVpZA==&soluriver=2&soluuid=96df81b4-0bcf-47cc-a134-ced6e678d569&itemtypeid=34&tid=73309cd8-91ae-42ab-b7be-b12cb7921148"></video>
+
+        <hr>🎉✨input tag🎉🎊<hr>
+        type 속성!!
+        <input type="text">🎁
+        <input type="password">🎁
+        <input type="file">🎁
+        <input type="radio">🎁
+        <input type="checkbox">🎁
+
+        <input type="time">
+        <input type="url">
+        <input type="color">
+
+
+
+        <style>
+            .red {
+                color: red;
+                /* color 글자색 */
+                background-color: cyan;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .blue{
+                color: blue;
+            }
+            #j {
+                color :brown;
+            }
+        </style>
+
+
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Get 전송</h1>
+    <form>
+        <input type="text" name="kw1"><br><br>
+        <textarea name="kw2"></textarea><br><br>
+        <button>GET</button>
+    </form>
+
+    <h1>Post 전송</h1>
+    <form method = "post">
+        {% csrf_token %}
+        <input type="text" name="kw3"><br><br>
+        <textarea name="kw4"></textarea><br><br>
+        <button>POST</button>
+    </form>
+
+</body>
+</html>

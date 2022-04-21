@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>CREATE PAGE</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" size="30" name="subject"><br><br>
+        <input type="text" name="writer"><br><br>
+        <textarea cols="50" name="content"></textarea><br><br>
+        <button>Create</button>
+        <a href="{% url 'index' %}"><button type="button">HOME</button></a>
+    </form>
+
+</body>
+</html>

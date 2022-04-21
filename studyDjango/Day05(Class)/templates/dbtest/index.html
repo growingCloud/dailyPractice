@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    Hello World!
+    {{var1}}
+    {{var2}}
+
+    {% if False %}
+    A
+    {% else %}
+    B
+    {% endif %}
+
+    {% for i in var2 %}
+    {{i}}
+    {% endfor %}
+
+    <ul>
+        {% for i in var2 %}
+            <li>{{forloop.first}}</li>
+        {% endfor%}
+    </ul>
+</body>
+</html>
